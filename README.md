@@ -17,7 +17,7 @@ Add `pequi` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  pequi: ^1.0.0
+  pequi: ^0.0.1
 ```
 
 Then run:
@@ -72,7 +72,6 @@ This command will load the environment-specific configurations for `company` def
 ```
 ├── environments.yaml
 ├── environments/
-│   ├── assets/
 │   ├── company/
 │   └── company2/
 ├── lib/
