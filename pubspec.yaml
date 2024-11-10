@@ -2,7 +2,7 @@ name: pequi
 description: "Pequi is a enviroment manager package that allow you to white label your application as you like"
 author: "James Yan <jamesyancm@gmail.com>"
 homepage: "https://github.com/jamesmacedo/pequi"
-version: 0.0.1
+version: 0.0.2
 
 environment:
   sdk: ^3.5.1
