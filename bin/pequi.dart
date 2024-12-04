@@ -9,7 +9,6 @@ const Map<String, String> neededFolders = {
     'build/res': 'android/app/src/main/res',
     'build/AppIcon.appiconset': 'ios/Runner/Assets.xcassets/AppIcon.appiconset',
     //build files
-
     'build/AndroidManifest.xml': 'android/app/src/main/AndroidManifest.xml',
     'build/project.pbxproj': 'ios/Runner.xcodeproj/project.pbxproj',
     'build/build.gradle': 'android/app/build.gradle',
@@ -18,6 +17,25 @@ const Map<String, String> neededFolders = {
 Future<bool> checkDirectory(String path) async {
   final dir = Directory(path);
   return await dir.exists();
+}
+
+Future<void> clean() async {
+  for (var folder in neededFolders.values.toList()) {
+    var target = Directory(folder);
+
+    print('Trying to remove the target: $folder');
+
+    if (await target.exists()) {
+        try {
+            await target.delete(recursive: true);
+            print('Target removed with success');
+        } catch (e) {
+            print('Error while trying to remove the target: $e');
+        }
+    } else {
+        print('Target does not exist.');
+    }      
+  }  
 }
 
 Future<void> createSymbolicLink(String targetPath, String linkPath) async {
@@ -29,9 +47,7 @@ Future<void> createSymbolicLink(String targetPath, String linkPath) async {
       throw Exception('The target path does not exist: $absoluteTargetPath');
     }
 
-    // Verifica se o link simbólico já existe
     if (await link.exists()) {
-      // Remove o link simbólico existente
       await link.delete();
       print('Removed existing symbolic link: $linkPath');
     }
@@ -43,7 +59,6 @@ Future<void> createSymbolicLink(String targetPath, String linkPath) async {
   }
 }
 
-// Função para executar comandos no terminal
 Future<void> runCommand(List<String> command) async {
   try {
     print('Running command: ${command.join(' ')}');
@@ -59,7 +74,8 @@ Future<void> runCommand(List<String> command) async {
   }
 }
 
-Future<void> main(List<String> arguments) async {
+runEnvironment(List<String> arguments) async {
+
   if (await checkDirectory('environments') == false) {
     print('The environments folder does not exist in this project, please create one');
     return;
@@ -104,6 +120,23 @@ Future<void> main(List<String> arguments) async {
     await createSymbolicLink('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
   }
 
+  if (arguments.contains('-icons')){
+    print('Changing the icons with flutter_launcher_icons');
+    await runCommand(['dart', 'pub', 'run', 'flutter_launcher_icons:main']);
+  }
+
+}
+
+Future<void> main(List<String> arguments) async {
+    switch(arguments[0]) {
+        case "clean":
+            clean();
+            return;
+        case "-e":
+            runEnvironment(arguments); 
+            return;
+    }
+
   // // to run android package rename
   // await runCommand([
   //   'dart',
@@ -121,6 +154,4 @@ Future<void> main(List<String> arguments) async {
   //   data['environments'][environment]['packages']['ios'],
   //   '--ios'
   // ]);
-
-  // await runCommand(['dart', 'pub', 'run', 'flutter_launcher_icons:main']);
 }
