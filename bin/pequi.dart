@@ -20,12 +20,13 @@ Future<bool> checkDirectory(String path) async {
 }
 
 Future<void> clean() async {
-  for (var folder in neededFolders.values.toList()) {
-    var target = Directory(folder);
+  for (var targ in neededFolders.values.toList()) {
+    var targetFile = File(targ);
+    var target = Directory(targ);
 
-    print('Trying to remove the target: $folder');
+    print('Trying to remove the target: $targ');
 
-    if (await target.exists()) {
+    if (await target.exists() || await targetFile.exists()) {
         try {
             await target.delete(recursive: true);
             print('Target removed with success');
@@ -117,14 +118,64 @@ runEnvironment(List<String> arguments) async {
   final configPath = data['environments'][environment]['config'];
 
   for (var folderKey in neededFolders.keys.toList()) {
-    await createSymbolicLink('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
+    // await createSymbolicLink('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
+    await copyFileOrDirectory('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
   }
 
-  if (arguments.contains('-icons')){
+  if (arguments.contains('--icons')){
     print('Changing the icons with flutter_launcher_icons');
     await runCommand(['dart', 'pub', 'run', 'flutter_launcher_icons:main']);
   }
 
+}
+
+Future<void> copyFileOrDirectory(String sourcePath, String destinationPath) async {
+  final sourceFile = File(sourcePath); 
+  final sourceDir = Directory(sourcePath); 
+
+  try {
+    final destination = Directory(destinationPath);
+
+    if (await sourceFile.exists()) {
+      print('Target file found: $sourcePath');
+      await copyFile(sourceFile, destinationPath);
+    } else if (await sourceDir.exists()) {
+      print('Target directory found: $sourcePath');
+      await copyDirectory(sourceDir, destination);
+    } else {
+      throw Exception('File or directory not found: $sourcePath');
+    }
+  } catch (e) {
+    print('Error while trying to copy: $e');
+  }
+}
+
+Future<void> copyDirectory(Directory source, Directory destination) async {
+
+  if (!await destination.exists()) {
+    await destination.create(recursive: true);
+  }
+
+  await for (var entity in source.list()) {
+    if (entity is Directory) {
+        final targetPath = '${destination.path}/${entity.uri.pathSegments[entity.uri.pathSegments.length-2]}';
+      await copyDirectory(entity, Directory(targetPath));
+    } else if (entity is File) {
+        final targetPath = '${destination.path}/${entity.uri.pathSegments.last}';
+        await copyFile(entity, targetPath);
+    }
+  }
+}
+
+Future<void> copyFile(File source, String destinationPath) async {
+  final destinationFile = File(destinationPath);
+  
+  if (await destinationFile.exists()) {
+    await destinationFile.delete();
+  }
+
+  await source.copy(destinationPath);
+  print('Arquivo copiado: ${source.path} -> $destinationPath');
 }
 
 Future<void> main(List<String> arguments) async {
@@ -133,6 +184,7 @@ Future<void> main(List<String> arguments) async {
             clean();
             return;
         case "-e":
+            clean();
             runEnvironment(arguments); 
             return;
     }
