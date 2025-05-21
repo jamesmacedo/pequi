@@ -3,7 +3,8 @@ import 'package:yaml/yaml.dart';
 import 'package:args/args.dart';
 
 import '../tui/loading.dart';
-import '../config/files.dart';
+import './colors.dart';
+import '../../config/files.dart';
 
 Future<bool> checkDirectory(String path) async {
   final dir = Directory(path);
@@ -83,7 +84,7 @@ Future<void> runEnvironment(ArgResults arguments) async {
     return;
   }
 
-  final configPath = data['environments'][environment]['config'];
+  final configPath = environment;
 
   await clean();
 
@@ -95,6 +96,8 @@ Future<void> runEnvironment(ArgResults arguments) async {
     await copyFileOrDirectory('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
     loading.stop();
   }
+
+  generateColors();
 }
 
 Future<void> copyFileOrDirectory(String sourcePath, String destinationPath) async {
