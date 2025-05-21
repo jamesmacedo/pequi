@@ -27,7 +27,7 @@ Map<String, dynamic> defaultColors = {
     'transparency50':   '#00000050',
 };
 
-Future<void> generateColorsStatic({required Map<String, dynamic> colors, required String type}) async{
+Future<void> generateColorsStatic({required Map<String, dynamic> colors, required String type, required String className}) async{
 
   final outputResolved = await Isolate.resolvePackageUri(
     Uri.parse('package:pequi/theme/$type.dart'),
@@ -46,7 +46,7 @@ Future<void> generateColorsStatic({required Map<String, dynamic> colors, require
   buffer.writeln();
   buffer.writeln('import \'package:flutter/material.dart\';');
   buffer.writeln();
-  buffer.writeln('class BrandColors {');
+  buffer.writeln('class $className {');
 
   for (final color in colors.entries) {
     buffer.writeln('  static const ${color.key} = Color(0xFF${_hex(color.value)});');
@@ -107,9 +107,9 @@ void generateColors(){
     generateColorsFromYAML();
 
     // Generation colors from the static files
-    generateColorsStatic(colors: defaultColors, type: 'default');
-    generateColorsStatic(colors: typoColors, type: 'typo');
-    generateColorsStatic(colors: feedbackColors, type: 'feedback');
+    generateColorsStatic(colors: defaultColors, type: 'default', className: 'DefaultColors');
+    generateColorsStatic(colors: typoColors, type: 'typo', className: 'TypoColors');
+    generateColorsStatic(colors: feedbackColors, type: 'feedback', className: 'FeedbackColors');
 
     
 
