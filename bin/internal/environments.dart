@@ -54,7 +54,7 @@ Future<void> createSymbolicLink(String targetPath, String linkPath) async {
   }
 }
 
-Future<void> runEnvironment(ArgResults arguments) async {
+Future<void> runEnvironment(String environment) async {
 
   if (await checkDirectory('environments') == false) {
     print('The environments folder does not exist in this project, please create one');
@@ -72,7 +72,6 @@ Future<void> runEnvironment(ArgResults arguments) async {
 
   String keys = data['environments'].keys.toList().join(', ');
 
-  final environment = arguments['environment'];
 
   if (environment == null) {
     print('Please enter one of the following available company codes using the -e flag: [$keys]');

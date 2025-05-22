@@ -48,8 +48,12 @@ Future<void> generateColorsStatic({required Map<String, dynamic> colors, require
   buffer.writeln();
   buffer.writeln('class $className {');
 
+  var i = 0;
   for (final color in colors.entries) {
     buffer.writeln('  static const ${color.key} = Color(0xFF${_hex(color.value)});');
+    if (i == 3) {
+        break;
+    }
   }
   buffer.writeln('}');
 
