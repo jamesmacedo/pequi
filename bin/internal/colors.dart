@@ -42,7 +42,7 @@ Future<void> generateColorsStatic({required Map<String, dynamic> colors, require
 
   final buffer = StringBuffer();
   buffer.writeln('// GENERATED FILE - DO NOT MODIFY BY HAND');
-  buffer.writeln('// Generated from colors.yaml');
+  buffer.writeln('// Generated from environments.yaml');
   buffer.writeln();
   buffer.writeln('import \'package:flutter/material.dart\';');
   buffer.writeln();
@@ -86,7 +86,7 @@ Future<void> generateColorsFromYAML() async{
 
   final buffer = StringBuffer();
   buffer.writeln('// GENERATED FILE - DO NOT MODIFY BY HAND');
-  buffer.writeln('// Generated from colors.yaml');
+  buffer.writeln('// Generated from environments.yaml');
   buffer.writeln();
   buffer.writeln('import \'package:flutter/material.dart\';');
   buffer.writeln();

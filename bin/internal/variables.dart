@@ -40,9 +40,9 @@ Future<void> runVariables(String environment, bool isProd) async{
 
 
   buffer.writeln('// GENERATED FILE - DO NOT MODIFY BY HAND');
-  buffer.writeln('// Generated from colors.yaml');
+  buffer.writeln('// Generated from environments.yaml');
   buffer.writeln();
-  buffer.writeln('class Variables {');
+  buffer.writeln('class PequiVariables {');
   defineVariables(config['global']['variables'], selectedEnv, buffer);
   defineVariables(config['environments']?['guild']?['variables'], selectedEnv, buffer);
   buffer.writeln('}');
