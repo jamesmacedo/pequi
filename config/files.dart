@@ -3,7 +3,9 @@ const String filePath = 'environments.yaml';
 const String baseDirectory = 'environments';
 
 const Map<String, String> neededFolders = {
-    'assets': 'assets', 'config': 'lib/config', 
+    'assets': 'assets', 
+    'shorebird.yaml': 'shorebird.yaml',
+    'config': 'lib/config', 
     'build/res': 'android/app/src/main/res',
     'build/AppIcon.appiconset': 'ios/Runner/Assets.xcassets/AppIcon.appiconset',
     //build files

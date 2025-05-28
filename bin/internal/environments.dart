@@ -11,6 +11,47 @@ Future<bool> checkDirectory(String path) async {
   return await dir.exists();
 }
 
+Future<void> sync(String environment) async {
+
+  if (await checkDirectory('environments') == false) {
+    print('The environments folder does not exist in this project, please create one');
+    return;
+  }
+
+  final file = File(filePath);
+  if (!await file.exists()) {
+    print('Environment file "$filePath" not found.');
+    return;
+  }
+
+  final content = await file.readAsString();
+  final data = loadYaml(content);
+
+  String keys = data['environments'].keys.toList().join(', ');
+
+
+  if (environment == null) {
+    print('Please enter one of the following available company codes using the -e flag: [$keys]');
+    return;
+  }
+
+  if (!data['environments'].containsKey(environment)) {
+    print('Environment "$environment" does not exist.');
+    return;
+  }
+
+  final configPath = environment;
+
+  for (var folderKey in neededFolders.keys.toList()) {
+    final loading = Loading(text: 'Copying $folderKey');
+    loading.start();
+    await copyFileOrDirectory(neededFolders[folderKey]!, '$baseDirectory/$configPath/$folderKey');
+    loading.stop();
+  }
+
+  generateColors();
+}
+
 Future<void> clean() async {
 
   final loading = Loading(text: 'Cleaning project');
