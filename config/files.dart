@@ -12,4 +12,5 @@ const Map<String, String> neededFolders = {
     'build/AndroidManifest.xml': 'android/app/src/main/AndroidManifest.xml',
     'build/project.pbxproj': 'ios/Runner.xcodeproj/project.pbxproj',
     'build/build.gradle': 'android/app/build.gradle',
+    'build/Info.plist': 'ios/Runner/Info.plist',
 };
