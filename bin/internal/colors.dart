@@ -63,7 +63,7 @@ Future<void> generateColorsStatic({required Map<String, dynamic> colors, require
   // print('Generated: ${outputFile.path}');
 }
 
-Future<void> generateColorsFromYAML() async{
+Future<void> generateColorsFromYAML(String label) async{
 
   final yamlFile = File(filePath);
 
@@ -81,7 +81,7 @@ Future<void> generateColorsFromYAML() async{
   final content = yamlFile.readAsStringSync();
   final doc = loadYaml(content);
 
-  final env = doc['environments']['guild'];
+  final env = doc['environments'][label];
   final colors = env['colors'];
 
   final buffer = StringBuffer();
@@ -98,23 +98,19 @@ Future<void> generateColorsFromYAML() async{
 
   outputFile.createSync(recursive: true);
   outputFile.writeAsStringSync(buffer.toString());
-
-  // print('Generated: ${outputFile.path}');
 }
 
 String _hex(String hexColor) {
   return hexColor.replaceFirst('#', '').padLeft(6, '0').toUpperCase();
 }
 
-void generateColors(){
+void generateColors(String label){
     // Generation colors from the YAML file
-    generateColorsFromYAML();
+    generateColorsFromYAML(label);
 
     // Generation colors from the static files
     generateColorsStatic(colors: defaultColors, type: 'default', className: 'DefaultColors');
     generateColorsStatic(colors: typoColors, type: 'typo', className: 'TypoColors');
     generateColorsStatic(colors: feedbackColors, type: 'feedback', className: 'FeedbackColors');
-
-    
 
 }

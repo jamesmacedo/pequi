@@ -44,7 +44,7 @@ Future<void> runVariables(String environment, bool isProd) async{
   buffer.writeln();
   buffer.writeln('class PequiVariables {');
   defineVariables(config['global']['variables'], selectedEnv, buffer);
-  defineVariables(config['environments']?['guild']?['variables'], selectedEnv, buffer);
+  defineVariables(config['environments']?[environment]?['variables'], selectedEnv, buffer);
   buffer.writeln('}');
   outputFile.createSync(recursive: true);
   outputFile.writeAsStringSync(buffer.toString());

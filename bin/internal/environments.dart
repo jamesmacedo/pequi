@@ -49,7 +49,7 @@ Future<void> sync(String environment) async {
     loading.stop();
   }
 
-  generateColors();
+  generateColors(environment);
 }
 
 Future<void> clean() async {
@@ -95,7 +95,7 @@ Future<void> createSymbolicLink(String targetPath, String linkPath) async {
   }
 }
 
-Future<void> runEnvironment(String environment) async {
+Future<void> runEnvironment(String label) async {
 
   if (await checkDirectory('environments') == false) {
     print('The environments folder does not exist in this project, please create one');
@@ -114,17 +114,17 @@ Future<void> runEnvironment(String environment) async {
   String keys = data['environments'].keys.toList().join(', ');
 
 
-  if (environment == null) {
+  if (label == null) {
     print('Please enter one of the following available company codes using the -e flag: [$keys]');
     return;
   }
 
-  if (!data['environments'].containsKey(environment)) {
-    print('Environment "$environment" does not exist.');
+  if (!data['environments'].containsKey(label)) {
+    print('Environment "$label" does not exist.');
     return;
   }
 
-  final configPath = environment;
+  final configPath = label;
 
   await clean();
 
@@ -137,7 +137,7 @@ Future<void> runEnvironment(String environment) async {
     loading.stop();
   }
 
-  generateColors();
+  generateColors(label);
 }
 
 Future<void> copyFileOrDirectory(String sourcePath, String destinationPath) async {
