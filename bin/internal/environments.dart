@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 import 'package:args/args.dart';
 
@@ -95,7 +96,33 @@ Future<void> createSymbolicLink(String targetPath, String linkPath) async {
   }
 }
 
-Future<void> runEnvironment(String label) async {
+copyInfoPlist(String fileOrigin, String fileDestination){
+
+    final File origin = File(fileOrigin); 
+
+    final content = origin.readAsStringSync();
+
+    final document = XmlDocument.parse(content);
+    final dict = document.findAllElements('dict').first;
+
+    final keys = dict.findElements('key').toList();
+
+    for (int i = 0; i < keys.length; i++) {
+        if (keys[i].innerText == 'CFBundleDisplayName') {
+          final valueNode = keys[i].nextElementSibling!;
+          valueNode.innerText = '[Dev] ${valueNode.innerText}';
+          break;
+        }
+    }
+
+    final File destination = File(fileDestination);
+
+    destination.createSync(recursive: true);
+
+    destination.writeAsStringSync(document.toXmlString(pretty: true, indent: '  '));
+}
+
+Future<void> runEnvironment(String label, bool isProd) async {
 
   if (await checkDirectory('environments') == false) {
     print('The environments folder does not exist in this project, please create one');
@@ -132,8 +159,15 @@ Future<void> runEnvironment(String label) async {
 
     final loading = Loading(text: 'Copying $folderKey');
     loading.start();
-    // await createSymbolicLink('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
-    await copyFileOrDirectory('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
+
+    if(folderKey == 'build/Info.plist' && isProd == false){
+        copyInfoPlist('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
+    }else{
+        await copyFileOrDirectory('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
+    }
+
+    //[yan]: Not in use
+    // await copyFileOrDirectory('$baseDirectory/$configPath/$folderKey', neededFolders[folderKey]!);
     loading.stop();
   }
 

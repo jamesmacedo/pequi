@@ -24,7 +24,7 @@ Future<void> main(List<String> arguments) async {
     } 
 
     if(result['environment'] != null){
-        runEnvironment(result['environment']); 
+        runEnvironment(result['environment'], result['prod']); 
         runVariables(result['environment'], result['prod']); 
         return;
     }
