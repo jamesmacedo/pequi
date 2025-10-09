@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:yaml/yaml.dart';
 import 'dart:isolate';
-import '../../config/files.dart';
+import 'package:pequi/src/config/files.dart';
 
 Map<String, dynamic> feedbackColors = {
     'disabled': '#E7E7E7',

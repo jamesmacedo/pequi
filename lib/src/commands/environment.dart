@@ -1,9 +1,7 @@
+import 'package:pequi/src/internal.dart';
 import 'package:args/command_runner.dart';
-import 'package:logger/logger.dart';
 import 'package:pequi/src/internal/environments.dart';
 import 'package:barrel_files_annotation/barrel_files_annotation.dart';
-
-var logger = Logger();
 
 @includeInBarrelFile
 class EnvironmentCommand extends Command {
@@ -25,6 +23,6 @@ class EnvironmentCommand extends Command {
     final environment = argResults!.rest.first;
     final isProd = argResults!['prod'] as bool;
 
-    runEnvironment(environment, isProd);
+    EnvironmentService().run(environment, isProd);
   }
 }

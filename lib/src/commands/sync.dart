@@ -1,3 +1,4 @@
+import 'package:pequi/src/internal.dart';
 import 'package:args/command_runner.dart';
 import 'package:pequi/src/internal/environments.dart';
 import 'package:barrel_files_annotation/barrel_files_annotation.dart';
@@ -16,6 +17,6 @@ class SyncCommand extends Command {
       return;
     }
     final environment = argResults!.rest.first;
-    sync(environment);
+    EnvironmentService().sync(environment);
   }
 }
