@@ -3,6 +3,7 @@ import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 import 'package:args/args.dart';
 
+import 'package:pequi/src/internal.dart';
 import 'package:pequi/src/tui/loading.dart';
 import 'package:pequi/src/internal/colors.dart';
 import 'package:pequi/src/config/files.dart';
@@ -55,7 +56,7 @@ class EnvironmentService {
       loading.stop();
     }
 
-    generateColors(environment);
+    ColorService().generateColors(environment);
   }
 
   Future<void> clean() async {
@@ -177,7 +178,7 @@ class EnvironmentService {
       loading.stop();
     }
 
-    generateColors(label);
+    ColorService().generateColors(label);
   }
 
   Future<void> copyFileOrDirectory(

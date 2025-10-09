@@ -24,5 +24,6 @@ class EnvironmentCommand extends Command {
     final isProd = argResults!['prod'] as bool;
 
     EnvironmentService().run(environment, isProd);
+    VariableService().run(environment, isProd); 
   }
 }

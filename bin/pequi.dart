@@ -3,7 +3,7 @@ import 'package:pequi/src/internal.dart';
 
 Future<void> main(List<String> arguments) async {
   var runner = CommandRunner(
-      "pequi", "A dart tool to help with flutter app whitelabeling")
+      "pequi", "Pequi is a enviroment manager package that allow you to white label your application as you like")
     ..addCommand(EnvironmentCommand())
     ..addCommand(SyncCommand())
     ..run(arguments);
