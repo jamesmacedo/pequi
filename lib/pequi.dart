@@ -4,3 +4,5 @@ export "src/generated/theme/default.dart" show DefaultColors;
 export "src/generated/theme/typo.dart" show  TypoColors;
 
 export "src/generated/variables/internal.dart" show PequiVariables;
+
+export "src/internal/flags.dart" show PequiFlags;

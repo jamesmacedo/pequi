@@ -44,7 +44,8 @@ class VariableService {
     buffer.writeln('// Generated from environments.yaml');
     buffer.writeln();
     buffer.writeln('class PequiVariables {');
-    buffer.writeln('  static const isProd = ${isProd};');
+    buffer.writeln('  static const environment = "$environment";');
+    buffer.writeln('  static const isProd = $isProd;');
     defineVariables(config['global']['variables'], selectedEnv, buffer);
     defineVariables(config['environments']?[environment]?['variables'],
         selectedEnv, buffer);
