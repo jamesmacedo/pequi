@@ -17,8 +17,7 @@ class PequiFlags {
       throw Exception('Pequi not initialized. Call PequiFlags.init() first.');
     }
 
-    final isProd = PequiVariables.isProd;
-    final env = isProd ? 'prod' : 'dev';
+    const bool isProd = PequiVariables.isProd;
 
     final prodFlags = List<String>.from(_flags!['features']['prod'] ?? []);
     final devFlags = List<String>.from(_flags!['features']['dev'] ?? []);

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
-import 'package:args/args.dart';
 
 import 'package:pequi/src/internal.dart';
 import 'package:pequi/src/tui/loading.dart';
@@ -32,14 +31,6 @@ class EnvironmentService {
 
     final content = await file.readAsString();
     final data = loadYaml(content);
-
-    String keys = data['environments'].keys.toList().join(', ');
-
-    if (environment == null) {
-      print(
-          'Please enter one of the following available company codes using the -e flag: [$keys]');
-      return;
-    }
 
     if (!data['environments'].containsKey(environment)) {
       print('Environment "$environment" does not exist.');
